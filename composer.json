@@ -1,0 +1,60 @@
+{
+    "name": "igor360/tokens-eth-php-connector",
+    "keywords": [
+        "nft",
+        "ethereum",
+        "php",
+        "connector",
+        "merehead"
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Igor360\\NftEthPhpConnector\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Igor360\\NftEthPhpConnector\\Tests\\": "tests"
+        }
+    },
+    "authors": [
+        {
+            "name": "Igor360",
+            "homepage": "https://github.com/Igor360",
+            "role": "Developer"
+        },
+        {
+            "name": "MEREHEAD",
+            "homepage": "https://merehead.com/"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "ext-bcmath": "*",
+        "ext-curl": "*",
+        "ext-gmp": "*",
+        "ext-json": "*",
+        "illuminate/support": "^6.3|^7.0|^8.0|^9.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "tightenco/duster": "^0.3"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit tests",
+        "generateDoc": " phpDocumentor -d ./src -t docs"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Igor360\\NftEthPhpConnector\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

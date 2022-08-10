@@ -1,0 +1,7 @@
+composer.lock
+vendor
+.php_cs.cache
+.phpunit.result.cache
+.phpdoc
+.phpdoc/*
+/examples/test.php
