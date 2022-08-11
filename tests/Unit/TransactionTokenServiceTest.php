@@ -41,6 +41,5 @@ class TransactionTokenServiceTest extends TestCases
         $transactionResource->setHandler(ERC20Contract::class);
         $tokenService = new TransactionTokenService($transactionResource);
         $this->assertEquals('{"type":"Transfer","function":"transfer","decodedArgs":{"recipient":"0x5ec3528afe940abff1c7760ca33a5152dc5cd06c","amount":"1000000000000000000"},"decodedLogs":[{"Event":"Transfer","from":"0x394a64e586fc05bd28783351f14dfcc426efd230","to":"0x5ec3528afe940abff1c7760ca33a5152dc5cd06c","value":"1000000000000000000","contract":"0x7ef95a0fee0dd31b22626fa2e10ee6a223f8a684"}]}', $tokenService->getTransactionLogsJson());
-
     }
 }

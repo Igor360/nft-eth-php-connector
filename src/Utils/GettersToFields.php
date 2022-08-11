@@ -2,7 +2,7 @@
 
 namespace Igor360\NftEthPhpConnector\Utils;
 
-use Igor360\UniswapV2Connector\Exceptions\InvalidMethodCallException;
+use Igor360\NftEthPhpConnector\Exceptions\InvalidMethodCallException;
 
 /**
  * @trait GettersToFields

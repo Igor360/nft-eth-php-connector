@@ -35,7 +35,8 @@
         "ext-curl": "*",
         "ext-gmp": "*",
         "ext-json": "*",
-        "illuminate/support": "^6.3|^7.0|^8.0|^9.0"
+        "illuminate/support": "^6.3|^7.0|^8.0|^9.0",
+        "web3p/ethereum-tx": "^0.4.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",

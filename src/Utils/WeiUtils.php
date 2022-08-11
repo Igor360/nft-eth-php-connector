@@ -4,7 +4,7 @@ namespace Igor360\NftEthPhpConnector\Utils;
 
 trait WeiUtils
 {
-    public function convertCurrency(float $amount, string $from = 'wei', string $to = 'ether')
+    public static function convertCurrency(float $amount, string $from = 'wei', string $to = 'ether')
     {
 
         // relative to Ether

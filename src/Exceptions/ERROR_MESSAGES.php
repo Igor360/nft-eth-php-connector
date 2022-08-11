@@ -32,4 +32,6 @@ interface ERROR_MESSAGES
     public const TRANSACTION = "Invalid transaction";
 
     public const INVALID_CLASS_NAME = "Invalid class name for make instance";
+
+    public const BROADCAST_ERROR = "Transaction not broadcast";
 }

@@ -57,27 +57,6 @@ abstract class EthereumRPC extends BaseRPCService
         return $this->url();
     }
 
-    /**
-     * @param $tx
-     * @param string|int $block
-     * @return string
-     * @throws GethException
-     */
-    public function ethCall($tx, $block = "latest", $functionName = ''): string //0x44b19dfc
-    {
-        $res = $this->jsonRPC(
-            "eth_call",
-            null,
-            [
-                $tx,
-                $block
-            ],
-            $functionName
-        );
-
-        return Arr::get($res, "result");
-    }
-
     public function jsonRPC(
         string  $command,
         ?string $endpoint = null,
