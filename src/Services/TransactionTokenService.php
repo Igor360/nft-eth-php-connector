@@ -125,4 +125,40 @@ class TransactionTokenService extends TransactionService
         ['transaction' => $transaction] = $this->getTokenService()->prepareTransaction($addressFrom, $this->getResource()->model()->address, 0, $data);
         return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
     }
+
+    public function transferFrom(string $from, string $to, int $amount, string $privateKey): string
+    {
+        $utils = new Util();
+        $data = $this->contractEncodeTransfer($to, $amount);
+        $addressFrom = $utils->privateKeyToPublicKey($privateKey);
+        ['transaction' => $transaction] = $this->getTokenService()->prepareTransaction($addressFrom, $this->getResource()->model()->address, 0, $data);
+        return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
+    }
+
+    public function approve(string $to, int $amount, string $privateKey): string
+    {
+        $utils = new Util();
+        $data = $this->contractEncodeTransfer($to, $amount);
+        $addressFrom = $utils->privateKeyToPublicKey($privateKey);
+        ['transaction' => $transaction] = $this->getTokenService()->prepareTransaction($addressFrom, $this->getResource()->model()->address, 0, $data);
+        return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
+    }
+
+    public function burn(string $to, int $amount, string $privateKey): string
+    {
+        $utils = new Util();
+        $data = $this->contractEncodeTransfer($to, $amount);
+        $addressFrom = $utils->privateKeyToPublicKey($privateKey);
+        ['transaction' => $transaction] = $this->getTokenService()->prepareTransaction($addressFrom, $this->getResource()->model()->address, 0, $data);
+        return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
+    }
+
+    public function mint(string $to, int $amount, string $privateKey): string
+    {
+        $utils = new Util();
+        $data = $this->contractEncodeTransfer($to, $amount);
+        $addressFrom = $utils->privateKeyToPublicKey($privateKey);
+        ['transaction' => $transaction] = $this->getTokenService()->prepareTransaction($addressFrom, $this->getResource()->model()->address, 0, $data);
+        return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
+    }
 }
