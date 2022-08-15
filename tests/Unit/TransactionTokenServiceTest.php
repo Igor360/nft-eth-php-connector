@@ -42,4 +42,11 @@ class TransactionTokenServiceTest extends TestCases
         $tokenService = new TransactionTokenService($transactionResource);
         $this->assertEquals('{"type":"Transfer","function":"transfer","decodedArgs":{"recipient":"0x5ec3528afe940abff1c7760ca33a5152dc5cd06c","amount":"1000000000000000000"},"decodedLogs":[{"Event":"Transfer","from":"0x394a64e586fc05bd28783351f14dfcc426efd230","to":"0x5ec3528afe940abff1c7760ca33a5152dc5cd06c","value":"1000000000000000000","contract":"0x7ef95a0fee0dd31b22626fa2e10ee6a223f8a684"}]}', $tokenService->getTransactionLogsJson());
     }
+
+    public function testMakeTransferTransaction(): void
+    {
+        $token = "0x673AbA57ECd60B4Ad84528a975EF1bcF96af3302";
+        $tokensReceiver = "0x07b8146Bb7629FAAE2886ecDB6E4e6B7d08eb788";
+
+    }
 }

@@ -86,4 +86,24 @@ class ERC20Contract extends ContractService
     {
         return $this->ABIService->encodeCall('transferFrom', [$from, $to, $amount]);
     }
+
+    public function encodeApprove(string $to, int $amount): string
+    {
+        return $this->ABIService->encodeCall('approve', [$to, $amount]);
+    }
+
+    public function encodeMint(string $to, int $amount): string
+    {
+        return $this->ABIService->encodeCall('mint', [$to, $amount]);
+    }
+
+    public function encodeBurn(int $amount): string
+    {
+        return $this->ABIService->encodeCall('burn', [$amount]);
+    }
+
+    public function encodeBurnFrom(string $from, int $amount): string
+    {
+        return $this->ABIService->encodeCall('burnFrom', [$from, $amount]);
+    }
 }

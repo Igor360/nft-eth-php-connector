@@ -9,6 +9,7 @@ use Igor360\NftEthPhpConnector\Models\ContractCallInfo;
 use Igor360\NftEthPhpConnector\Models\Transaction;
 use Igor360\NftEthPhpConnector\Resources\Resource;
 use Illuminate\Support\Arr;
+use Web3p\EthereumUtil\Util;
 
 class TransactionTokenService extends TransactionService
 {
@@ -114,5 +115,14 @@ class TransactionTokenService extends TransactionService
         $functionName = $methods[$methodId] ?? null;
         $this->getTransactionModel()->callInfo->function = $functionName;
         $this->getTransactionModel()->callInfo->decodedArgs = $this->getTokenService()->decodeContractTransactionArgs($functionName, $this->getTransactionModel()->data);
+    }
+
+    public function transfer(string $to, int $amount, string $privateKey): string
+    {
+        $utils = new Util();
+        $data = $this->contractEncodeTransfer($to, $amount);
+        $addressFrom = $utils->privateKeyToPublicKey($privateKey);
+        ['transaction' => $transaction] = $this->getTokenService()->prepareTransaction($addressFrom, $this->getResource()->model()->address, 0, $data);
+        return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
     }
 }

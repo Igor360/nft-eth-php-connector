@@ -68,4 +68,18 @@ class TransactionService extends ResourceService
             throw new TransactionException("It's not contract transaction");
         }
     }
+
+    public function __call($name, $arguments)
+    {
+        if (str_contains('contract', $name)) {
+            $functionName = str_replace('contract', '', $name);
+            $functionName = lcfirst($functionName);
+            $contractInstance = $this->getResource()->getService();
+            if (method_exists($contractInstance, $functionName)) {
+                return $contractInstance->$functionName(...$arguments);
+            }
+        }
+
+        return $name(...$arguments);
+    }
 }
