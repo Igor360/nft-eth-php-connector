@@ -10,7 +10,7 @@ Short description here, maybe in future, haven't time for now.
 
 ## Documentation
 
-[SDK Documentation](https://igor360.github.io/uniswap-v2-protocol-php-connector/)
+[SDK Documentation](https://igor360.github.io/tokens-eth-php-connector/)
 
 ## Installation
 
