@@ -1,4 +1,4 @@
-#  Igor360\UniswapV2Connector
+#  igor360/tokens-eth-php-connector
 
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v1/igor360/uniswap-v2-protocol-php-connector.svg?style=flat-square)](https://packagist.org/packages/igor360/uniswap-v2-protocol-php-connector)
@@ -17,7 +17,7 @@ Short description here, maybe in future, haven't time for now.
 You can install the package via composer:
 
 ```bash
-    composer require igor360/uniswap-v2-protocol-php-connector
+    composer require igor360/tokens-eth-php-connector
 ```
 
 ## Usage
