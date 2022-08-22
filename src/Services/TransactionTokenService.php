@@ -9,7 +9,6 @@ use Igor360\NftEthPhpConnector\Models\ContractCallInfo;
 use Igor360\NftEthPhpConnector\Models\Transaction;
 use Igor360\NftEthPhpConnector\Resources\Resource;
 use Illuminate\Support\Arr;
-use Web3p\EthereumUtil\Util;
 
 class TransactionTokenService extends TransactionService
 {
@@ -19,32 +18,6 @@ class TransactionTokenService extends TransactionService
         parent::__construct($resource);
         $this->validate();
         $this->decode();
-    }
-
-    /**
-     * @return EthereumService|TokenService|null
-     */
-    public function getTokenService()
-    {
-        return $this->getResource()->getService();
-    }
-
-    public function getTransactionModel(): Transaction
-    {
-        /**
-         * @var ModelInterface|Transaction
-         */
-        return $this->getResource()->getModel();
-    }
-
-    public function getTransactionLogs(): ContractCallInfo
-    {
-        return $this->getTransactionModel()->callInfo;
-    }
-
-    public function getTransactionLogsJson(): string
-    {
-        return json_encode($this->getTransactionModel()->callInfo, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -115,50 +88,5 @@ class TransactionTokenService extends TransactionService
         $functionName = $methods[$methodId] ?? null;
         $this->getTransactionModel()->callInfo->function = $functionName;
         $this->getTransactionModel()->callInfo->decodedArgs = $this->getTokenService()->decodeContractTransactionArgs($functionName, $this->getTransactionModel()->data);
-    }
-
-    public function transfer(string $to, int $amount, string $privateKey): string
-    {
-        $utils = new Util();
-        $data = $this->contractEncodeTransfer($to, $amount);
-        $addressFrom = $utils->privateKeyToPublicKey($privateKey);
-        ['transaction' => $transaction] = $this->getTokenService()->prepareTransaction($addressFrom, $this->getResource()->model()->address, 0, $data);
-        return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
-    }
-
-    public function transferFrom(string $from, string $to, int $amount, string $privateKey): string
-    {
-        $utils = new Util();
-        $data = $this->contractEncodeTransfer($to, $amount);
-        $addressFrom = $utils->privateKeyToPublicKey($privateKey);
-        ['transaction' => $transaction] = $this->getTokenService()->prepareTransaction($addressFrom, $this->getResource()->model()->address, 0, $data);
-        return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
-    }
-
-    public function approve(string $to, int $amount, string $privateKey): string
-    {
-        $utils = new Util();
-        $data = $this->contractEncodeTransfer($to, $amount);
-        $addressFrom = $utils->privateKeyToPublicKey($privateKey);
-        ['transaction' => $transaction] = $this->getTokenService()->prepareTransaction($addressFrom, $this->getResource()->model()->address, 0, $data);
-        return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
-    }
-
-    public function burn(string $to, int $amount, string $privateKey): string
-    {
-        $utils = new Util();
-        $data = $this->contractEncodeTransfer($to, $amount);
-        $addressFrom = $utils->privateKeyToPublicKey($privateKey);
-        ['transaction' => $transaction] = $this->getTokenService()->prepareTransaction($addressFrom, $this->getResource()->model()->address, 0, $data);
-        return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
-    }
-
-    public function mint(string $to, int $amount, string $privateKey): string
-    {
-        $utils = new Util();
-        $data = $this->contractEncodeTransfer($to, $amount);
-        $addressFrom = $utils->privateKeyToPublicKey($privateKey);
-        ['transaction' => $transaction] = $this->getTokenService()->prepareTransaction($addressFrom, $this->getResource()->model()->address, 0, $data);
-        return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
     }
 }

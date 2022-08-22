@@ -5,10 +5,13 @@ namespace Igor360\NftEthPhpConnector\Tests\Unit;
 use Igor360\NftEthPhpConnector\Connections\BaseCredentials;
 use Igor360\NftEthPhpConnector\Contracts\ContractsFactory;
 use Igor360\NftEthPhpConnector\Contracts\ERC20Contract;
+use Igor360\NftEthPhpConnector\Resources\ERC20Resource;
 use Igor360\NftEthPhpConnector\Resources\TransactionResource;
 use Igor360\NftEthPhpConnector\Services\TransactionTokenService;
 use Igor360\NftEthPhpConnector\Tests\TestCases;
 use Igor360\NftEthPhpConnector\Tests\TestConstantsInterface;
+use Igor360\NftEthPhpConnector\Transactions\ERC20Transaction;
+use Igor360\NftEthPhpConnector\Transactions\Transaction;
 
 class TransactionTokenServiceTest extends TestCases
 {
@@ -45,8 +48,12 @@ class TransactionTokenServiceTest extends TestCases
 
     public function testMakeTransferTransaction(): void
     {
+        $this->markTestSkipped("Not completed");
         $token = "0x673AbA57ECd60B4Ad84528a975EF1bcF96af3302";
         $tokensReceiver = "0x07b8146Bb7629FAAE2886ecDB6E4e6B7d08eb788";
-
+        $credentials = new BaseCredentials(TestConstantsInterface::RPC_HOST, TestConstantsInterface::RPC_PORT, true);
+        $tokenResource = new ERC20Resource($token, $credentials);
+        $tokenTransaction = new ERC20Transaction($tokenResource);
+        $hash = $tokenTransaction->transfer($tokensReceiver, 100, TestConstantsInterface::KEY);
     }
 }

@@ -2,8 +2,10 @@
 
 namespace Igor360\NftEthPhpConnector\Contracts;
 
+use Igor360\NftEthPhpConnector\Configs\ConfigFacade;
 use Igor360\NftEthPhpConnector\Configs\ConfigFacade as Config;
 use Igor360\NftEthPhpConnector\Exceptions\GethException;
+use Igor360\NftEthPhpConnector\Interfaces\ConfigInterface;
 use Igor360\NftEthPhpConnector\Services\ContractService;
 use Illuminate\Support\Arr;
 
@@ -11,7 +13,7 @@ class ERC20Contract extends ContractService
 {
     function abi(): array
     {
-        return json_decode(Config::get("uniswap-v2-connector.erc20ABI"), true, 512, JSON_THROW_ON_ERROR);
+        return json_decode(Config::get(ConfigInterface::BASE_KEY . ".erc20ABI"), true, 512, JSON_THROW_ON_ERROR);
     }
 
     public function balanceOf(string $contractAddress, string $address)/*: string*/

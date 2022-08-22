@@ -9,41 +9,12 @@ use Igor360\NftEthPhpConnector\Interfaces\ConfigInterface;
 use Igor360\NftEthPhpConnector\Services\ContractService;
 use Illuminate\Support\Arr;
 
-class ERC721Contract extends ContractService
+class ERC1155Contract extends ContractService
 {
-    public function abi(): array
+    function abi(): array
     {
-        return json_decode(Config::get(ConfigInterface::BASE_KEY . ".erc721ABI"), true, 512, JSON_THROW_ON_ERROR);
+        return json_decode(Config::get(ConfigInterface::BASE_KEY . ".erc1155ABI"), true, 512, JSON_THROW_ON_ERROR);
     }
-
-    public function balanceOf(string $contractAddress, string $address)
-    {
-        $this->validateAddress($contractAddress, $address);
-        $res = $this->callContractFunction($contractAddress, "balanceOf", [$address]);
-        return sprintf("%0.0f", hexdec(Arr::first($res)));
-    }
-
-    public function baseURI(string $contractAddress)
-    {
-        $this->validateAddress($contractAddress);
-        $res = $this->callContractFunction($contractAddress, "baseURI");
-        return Arr::first($res);
-    }
-
-    public function name(string $contractAddress)
-    {
-        $this->validateAddress($contractAddress);
-        $res = $this->callContractFunction($contractAddress, "name");
-        return Arr::first($res);
-    }
-
-    public function symbol(string $contractAddress)
-    {
-        $this->validateAddress($contractAddress);
-        $res = $this->callContractFunction($contractAddress, "symbol");
-        return Arr::first($res);
-    }
-
 
     /**
      * Create transfer tokens transaction
@@ -78,6 +49,26 @@ class ERC721Contract extends ContractService
     }
 
     /**
+     * @param string $from
+     * @param string $to
+     * @param int $tokenId
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function encodeMint(string $to, int $tokenId, int $amount, string $data = ""): string
+    {
+        $this->validateAddress($to);
+        return $this->ABIService->encodeCall('mint', [$to, $tokenId, $amount, $data]);
+    }
+
+    public function encodeBurn(string $to, int $tokenId, int $amount): string
+    {
+        $this->validateAddress($to);
+        return $this->ABIService->encodeCall("burn", [$to, $tokenId, $amount]);
+    }
+
+    /**
      * Approve tokens
      *
      * @param string $from
@@ -104,5 +95,33 @@ class ERC721Contract extends ContractService
     {
         $res = $this->callContractFunction($contractAddress, 'getApproved', [$tokenId]);
         return Arr::get($res, 'result');
+    }
+
+    public function balanceOf(string $contractAddress, string $address)
+    {
+        $this->validateAddress($contractAddress, $address);
+        $res = $this->callContractFunction($contractAddress, "balanceOf", [$address]);
+        return sprintf("%0.0f", hexdec(Arr::first($res)));
+    }
+
+    public function baseURI(string $contractAddress)
+    {
+        $this->validateAddress($contractAddress);
+        $res = $this->callContractFunction($contractAddress, "baseURI");
+        return Arr::first($res);
+    }
+
+    public function name(string $contractAddress)
+    {
+        $this->validateAddress($contractAddress);
+        $res = $this->callContractFunction($contractAddress, "name");
+        return Arr::first($res);
+    }
+
+    public function symbol(string $contractAddress)
+    {
+        $this->validateAddress($contractAddress);
+        $res = $this->callContractFunction($contractAddress, "symbol");
+        return Arr::first($res);
     }
 }

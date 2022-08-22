@@ -86,7 +86,7 @@ class EthereumService extends EthereumRPC
 
     public function getChainId(): int
     {
-        $res = $this->jsonRPC('net_version', null, []);
+        $res = $this->jsonRPC('net_version');
         return (int)Arr::get($res, 'result');
     }
 
@@ -104,7 +104,8 @@ class EthereumService extends EthereumRPC
     {
         try {
             $hash = $transaction->sign($privateKey);
-
+            var_dump($hash);
+            ob_flush();
             return $this->broadcastTransactionHash($hash);
         } catch (GethException $e) {
             if (in_array(
@@ -149,7 +150,7 @@ class EthereumService extends EthereumRPC
     }
 
     public function calculateGasLimit(
-        string $from, string $to, int $amount, string $data = '00', string $block = 'latest'
+        string $from, string $to, int $amount, string $data = '0x0', string $block = 'latest'
     ): string
     {
         $this->validateAddress($from, $to);
@@ -157,13 +158,13 @@ class EthereumService extends EthereumRPC
             'from' => $from,
             'to' => $to,
             'value' => '0x' . dechex($amount),
-            'data' => "0x$data",
+            'data' => $data,
         ];
         $res = $this->jsonRPC('eth_estimateGas', null, [(object)$params, $block]);
         return Arr::get($res, 'result');
     }
 
-    public function prepareTransaction(string $from, string $to, int $amountInWEI = 0, string $data = '00'): array
+    public function prepareTransaction(string $from, string $to, int $amountInWEI = 0, string $data = '0x00'): array
     {
         $this->validateAddress($from, $to);
         $gasPrice = $this->getGethGasPrice();

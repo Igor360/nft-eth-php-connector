@@ -73,7 +73,6 @@ abstract class ABIEncryptService
         if (!$len) {
             $len = null;
         }
-
         // Handle array types
 
         if ($type === "address[]") {
@@ -106,6 +105,24 @@ abstract class ABIEncryptService
             case "string":
                 $value = ASCII::base16Encode($value);
                 break;
+            case "bytes":
+                if (substr($value, 0, 2) === "0x") {
+                    $value = substr($value, 2);
+                }
+                $offset = 128;
+                $strSize = strlen($value);
+                $chunks = str_split($value, 64);
+                $hex = null;
+                foreach ($chunks as $chunk) {
+                    $hex .= str_pad($chunk, 64, "0");
+                }
+                $offsetHex = substr(str_pad(Integers::Pack_UInt_BE($offset), 64, "0", STR_PAD_LEFT), 0, 64);
+                $countElements = $strSize / 2;
+                $countElementsHex = substr(str_pad(Integers::Pack_UInt_BE($countElements), 64, "0", STR_PAD_LEFT), 0, 64);
+                var_dump($offsetHex . $countElementsHex . $hex);
+                ob_flush();
+
+                return $offsetHex . $countElementsHex . $hex;
             default:
                 throw new ContractABIException(sprintf('Cannot encode value of type "%s"', $type));
         }

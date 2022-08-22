@@ -2,7 +2,8 @@
 
 namespace Igor360\NftEthPhpConnector\Services\DataTypes;
 
-use Igor360\UniswapV2Connector\Exceptions\ContractABIException;
+
+use Igor360\NftEthPhpConnector\Exceptions\ContractABIException;
 
 /**
  * @source https://github.com/furqansiddiqui/ethereum-php

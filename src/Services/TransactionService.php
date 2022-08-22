@@ -3,16 +3,36 @@
 namespace Igor360\NftEthPhpConnector\Services;
 
 use Igor360\NftEthPhpConnector\Exceptions\TransactionException;
+use Igor360\NftEthPhpConnector\Interfaces\ModelInterface;
+use Igor360\NftEthPhpConnector\Models\ContractCallInfo;
+use Igor360\NftEthPhpConnector\Models\Transaction;
 use Igor360\NftEthPhpConnector\Resources\Resource;
 use Igor360\NftEthPhpConnector\Resources\TransactionResource;
+use Web3p\EthereumUtil\Util;
 
 class TransactionService extends ResourceService
 {
     protected ?Resource $decodeResource;
 
-    public function __construct(TransactionResource $resource)
+    public function __construct(Resource $resource)
     {
         $this->setResource($resource);
+    }
+
+    /**
+     * @return EthereumService|TokenService|null
+     */
+    public function getResourceService()
+    {
+        return $this->getResource()->getService();
+    }
+
+    public function getTransactionModel()
+    {
+        /**
+         * @var ModelInterface|Transaction
+         */
+        return $this->getResource()->getModel();
     }
 
     public function loadTransactionInstance(): self
@@ -33,6 +53,16 @@ class TransactionService extends ResourceService
     public function getTransactionInfo(): object
     {
         return $this->getResource()->data()->toObject();
+    }
+
+    public function getTransactionLogs(): ContractCallInfo
+    {
+        return $this->getTransactionModel()->callInfo;
+    }
+
+    public function getTransactionLogsJson(): string
+    {
+        return json_encode($this->getTransactionModel()->callInfo, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -71,7 +101,7 @@ class TransactionService extends ResourceService
 
     public function __call($name, $arguments)
     {
-        if (str_contains('contract', $name)) {
+        if (str_contains($name, 'contract')) {
             $functionName = str_replace('contract', '', $name);
             $functionName = lcfirst($functionName);
             $contractInstance = $this->getResource()->getService();
@@ -81,5 +111,12 @@ class TransactionService extends ResourceService
         }
 
         return $name(...$arguments);
+    }
+
+    protected function addressFromPrivate(string $privateKey): string
+    {
+        $utils = new Util();
+        $publicKey = $utils->privateKeyToPublicKey($privateKey);
+        return $utils->publicKeyToAddress($publicKey);
     }
 }

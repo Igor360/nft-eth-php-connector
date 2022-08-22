@@ -8,7 +8,7 @@ interface ConfigInterface
 
     public const DATE_ZONE = "Europe/Helsinki";
 
-    public const BASE_KEY = "uniswap-v2-connector";
+    public const BASE_KEY = "tokens-eth-php-connector";
 
     public static function get(string $key, $default = null);
 

@@ -12,6 +12,7 @@ abstract class ContractsFactory
         'erc20' => ERC20Contract::class,
         'weth' => WETHContract::class,
         'erc721' => ERC721Contract::class,
+        'erc1155' => ERC1155Contract::class,
     ];
 
     public static function make(string $key, ConnectionInterface $credentials): ContractService
