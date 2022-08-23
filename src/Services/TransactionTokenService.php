@@ -39,7 +39,7 @@ class TransactionTokenService extends TransactionService
     {
         $this->isContract();
         $txId = $this->getContractFunctionId();
-        $txIds = array_keys($this->getTokenService()->getMethodSelectors() ?? []);
+        $txIds = array_keys($this->getResourceService()->getMethodSelectors() ?? []);
         if (!in_array($txId, $txIds, true)) {
             throw new ContractException("It's not token transaction");
         }
@@ -47,7 +47,7 @@ class TransactionTokenService extends TransactionService
 
     public function getMethodType(): ?string
     {
-        $constants = $this->getTokenService()->getMethodSelectors() ?? [];
+        $constants = $this->getResourceService()->getMethodSelectors() ?? [];
         return Arr::first(array_values(Arr::where($constants, fn($value, $key) => $key === $this->getContractFunctionId())));
     }
 
@@ -61,7 +61,7 @@ class TransactionTokenService extends TransactionService
 
     public function getEventsTopics(): array
     {
-        return $this->getTokenService()->getEventsTopics();
+        return $this->getResourceService()->getEventsTopics();
     }
 
     public function decodeTransactionLogs(): void
@@ -73,7 +73,7 @@ class TransactionTokenService extends TransactionService
             if (is_null($topicId)) {
                 continue;
             }
-            $decodedLogs[] = $this->getTokenService()->decodeContractTransactionLogs($topicId, $log);
+            $decodedLogs[] = $this->getResourceService()->decodeContractTransactionLogs($topicId, $log);
         }
         $this->getTransactionModel()->callInfo->decodedLogs = $decodedLogs;
     }
@@ -81,12 +81,12 @@ class TransactionTokenService extends TransactionService
     public function decodeTransactionArgs(): void
     {
         $methodId = $this->getContractFunctionId();
-        $methods = $this->getTokenService()->getMethodSelectors();
+        $methods = $this->getResourceService()->getMethodSelectors();
         if (!Arr::has($methods, $methodId)) {
             throw new TransactionException("Invalid method, method with selector ${methodId} not located in abi");
         }
         $functionName = $methods[$methodId] ?? null;
         $this->getTransactionModel()->callInfo->function = $functionName;
-        $this->getTransactionModel()->callInfo->decodedArgs = $this->getTokenService()->decodeContractTransactionArgs($functionName, $this->getTransactionModel()->data);
+        $this->getTransactionModel()->callInfo->decodedArgs = $this->getResourceService()->decodeContractTransactionArgs($functionName, $this->getTransactionModel()->data);
     }
 }

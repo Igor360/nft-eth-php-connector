@@ -261,6 +261,8 @@ abstract class ABIEncryptService
             case "string":
                 $encoded = ltrim($encoded, "0");
                 return ASCII::base16Decode($encoded);
+            case "bytes":
+                return null;
             case "tuple":
             default:
                 throw new ContractABIException(sprintf('Cannot encode value of type "%s"', $type));
@@ -382,8 +384,12 @@ abstract class ABIEncryptService
         for ($i = 0; $i < $dataResponseParamsCount; $i++) {
             $param = $dataResponseParams[$i];
             $chunk = $chunks[$i];
-            $decoded = $this->decodeArg($param['type'] ?? null, $chunk);
-
+            $type = $param['type'] ?? null;
+            if (!$this->isDynamicType($type)) {
+                $decoded = $this->decodeArg($type, $chunk);
+            } else {
+                $decoded = null;
+            }
             if ($param['name'] ?? false) {
                 $res[$param['name']] = $decoded;
             } else {
