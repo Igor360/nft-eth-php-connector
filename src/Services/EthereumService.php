@@ -104,8 +104,6 @@ class EthereumService extends EthereumRPC
     {
         try {
             $hash = $transaction->sign($privateKey);
-            var_dump($hash);
-            ob_flush();
             return $this->broadcastTransactionHash($hash);
         } catch (GethException $e) {
             if (in_array(

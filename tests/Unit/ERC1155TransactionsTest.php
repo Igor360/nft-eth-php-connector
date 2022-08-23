@@ -3,7 +3,10 @@
 namespace Igor360\NftEthPhpConnector\Tests\Unit;
 
 use Igor360\NftEthPhpConnector\Connections\BaseCredentials;
+use Igor360\NftEthPhpConnector\Contracts\ERC20Contract;
 use Igor360\NftEthPhpConnector\Resources\ERC1155Resource;
+use Igor360\NftEthPhpConnector\Resources\TransactionResource;
+use Igor360\NftEthPhpConnector\Services\TransactionTokenService;
 use Igor360\NftEthPhpConnector\Tests\TestCases;
 use Igor360\NftEthPhpConnector\Tests\TestConstantsInterface;
 use Igor360\NftEthPhpConnector\Transactions\ERC1155Transaction;
@@ -19,5 +22,15 @@ class ERC1155TransactionsTest extends TestCases
         $tokenTransaction = new ERC1155Transaction($tokenResource);
         $hash = $tokenTransaction->mint($tokensReceiver, 1, 1, TestConstantsInterface::KEY);
         $this->assertNotNull($hash);
+    }
+
+    public function testDecodeMintTransaction(): void
+    {
+        $hash = "0x12f602dcc28fe4a7377580bfedc964acaab3f401b6a5f8bc9968cdbb2937c598";
+        $credentials = new BaseCredentials(TestConstantsInterface::RPC_HOST, TestConstantsInterface::RPC_PORT, true);
+        $transactionResource = new TransactionResource($hash, $credentials);
+        $transactionResource->setHandler(ERC1155Resource::class);
+        $tokenService = new TransactionTokenService($transactionResource);
+        $this->assertEquals("", $tokenService->getTransactionInfoJson());
     }
 }

@@ -119,9 +119,6 @@ abstract class ABIEncryptService
                 $offsetHex = substr(str_pad(Integers::Pack_UInt_BE($offset), 64, "0", STR_PAD_LEFT), 0, 64);
                 $countElements = $strSize / 2;
                 $countElementsHex = substr(str_pad(Integers::Pack_UInt_BE($countElements), 64, "0", STR_PAD_LEFT), 0, 64);
-                var_dump($offsetHex . $countElementsHex . $hex);
-                ob_flush();
-
                 return $offsetHex . $countElementsHex . $hex;
             default:
                 throw new ContractABIException(sprintf('Cannot encode value of type "%s"', $type));
