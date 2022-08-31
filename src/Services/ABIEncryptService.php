@@ -385,6 +385,8 @@ abstract class ABIEncryptService
             $param = $dataResponseParams[$i];
             $chunk = $chunks[$i];
             $type = $param['type'] ?? null;
+            var_dump($type, $chunk);
+            ob_flush();
             if (!$this->isDynamicType($type)) {
                 $decoded = $this->decodeArg($type, $chunk);
             } else {
