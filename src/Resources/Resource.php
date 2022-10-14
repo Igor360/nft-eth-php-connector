@@ -92,7 +92,7 @@ abstract class Resource
 
     abstract public function validateAddressOrHash(): void;
 
-    abstract public function load(): void;
+    abstract public function load(): self;
 
     abstract public function model(): string;
 }

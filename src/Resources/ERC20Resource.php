@@ -17,7 +17,7 @@ class ERC20Resource extends Resource
         $this->setAddressOrHash($contractAddress);
     }
 
-    public function load(): void
+    public function load(): self
     {
         $this->makeMap();
     }

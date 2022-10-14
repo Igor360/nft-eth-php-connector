@@ -18,10 +18,11 @@ class TransactionResource extends Resource
         $this->setAddressOrHash($hash);
     }
 
-    public function load(): void
+    public function load(): self
     {
         $this->loadTransaction();
         $this->loadLogs();
+        return $this;
     }
 
     private function loadTransaction(): void

@@ -16,8 +16,10 @@ class ERC1155Resource extends Resource
         $this->setAddressOrHash($contractAddress);
     }
 
-    public function load(): void
-    {}
+    public function load(): self
+    {
+        return $this;
+    }
 
     public function model(): string
     {
