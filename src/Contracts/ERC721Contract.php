@@ -11,9 +11,9 @@ use Illuminate\Support\Arr;
 
 class ERC721Contract extends ContractService
 {
-    public function abi(): array
+    function abi(): array
     {
-        return json_decode(Config::get(ConfigInterface::BASE_KEY . ".erc721ABI"), true, 512, JSON_THROW_ON_ERROR);
+        return count($this->contractABI) > 0 ? $this->contractABI : $this->abiFromConfig(Config::get(ConfigInterface::BASE_KEY . ".erc721ABI"));
     }
 
     public function balanceOf(string $contractAddress, string $address)

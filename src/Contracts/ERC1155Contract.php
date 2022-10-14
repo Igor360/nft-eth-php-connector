@@ -11,9 +11,10 @@ use Illuminate\Support\Arr;
 
 class ERC1155Contract extends ContractService
 {
+
     function abi(): array
     {
-        return json_decode(Config::get(ConfigInterface::BASE_KEY . ".erc1155ABI"), true, 512, JSON_THROW_ON_ERROR);
+        return count($this->contractABI) > 0 ? $this->contractABI : $this->abiFromConfig(Config::get(ConfigInterface::BASE_KEY . ".erc1155ABI"));
     }
 
     /**

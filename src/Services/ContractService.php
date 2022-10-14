@@ -13,11 +13,16 @@ abstract class ContractService extends EthereumService
 
     protected ABIService $ABIService;
 
-    private array $contractABI = [];
+    protected array $contractABI = [];
 
     public function abi(): array
     {
         return $this->contractABI;
+    }
+
+    protected function abiFromConfig(string $data): array
+    {
+        return json_decode($data, true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
