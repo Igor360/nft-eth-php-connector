@@ -13,7 +13,20 @@ abstract class ContractService extends EthereumService
 
     protected ABIService $ABIService;
 
-    abstract function abi(): array;
+    private array $contractABI = [];
+
+    public function abi(): array
+    {
+        return $this->contractABI;
+    }
+
+    /**
+     * @param array $contractABI
+     */
+    public function setContractABI(array $contractABI): void
+    {
+        $this->contractABI = $contractABI;
+    }
 
     public function __construct(ConnectionInterface $credentials)
     {
