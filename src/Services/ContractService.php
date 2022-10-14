@@ -26,6 +26,7 @@ abstract class ContractService extends EthereumService
     public function setContractABI(array $contractABI): void
     {
         $this->contractABI = $contractABI;
+        $this->ABIService = new ABIService($this->abi());
     }
 
     public function __construct(ConnectionInterface $credentials)
