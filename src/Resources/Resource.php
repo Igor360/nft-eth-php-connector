@@ -25,7 +25,7 @@ abstract class Resource
     /**
      * @return EthereumService
      */
-    public function getService(): EthereumService
+    public function getService()
     {
         return $this->service;
     }
