@@ -2,16 +2,15 @@
 
 namespace Igor360\NftEthPhpConnector\Transactions;
 
-use Igor360\NftEthPhpConnector\Services\TransactionTokenService;
-use Web3p\EthereumUtil\Util;
+use Igor360\NftEthPhpConnector\Services\TransactionService;
 
-class ERC20Transaction extends TransactionTokenService
+class ERC20Transaction extends TransactionService
 {
 
     public function transfer(string $to, int $amount, string $privateKey): string
     {
         $data = $this->contractEncodeTransfer($to, $amount);
-        $addressFrom = $utils->privateKeyToPublicKey($privateKey);
+        $addressFrom = $this->addressFromPrivate($privateKey);
         ['transaction' => $transaction] = $this->getResourceService()->prepareTransaction($addressFrom, $this->getResource()->getModel()->address, 0, $data);
         return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
     }
@@ -27,7 +26,7 @@ class ERC20Transaction extends TransactionTokenService
     public function approve(string $to, int $amount, string $privateKey): string
     {
         $data = $this->contractEncodeTransfer($to, $amount);
-        $addressFrom = $utils->privateKeyToPublicKey($privateKey);
+        $addressFrom = $this->addressFromPrivate($privateKey);
         ['transaction' => $transaction] = $this->getResourceService()->prepareTransaction($addressFrom, $this->getResource()->getModel()->address, 0, $data);
         return $this->getTokenService()->signAndBroadcastTransaction($transaction, $privateKey);
     }
