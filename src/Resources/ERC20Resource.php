@@ -20,6 +20,7 @@ class ERC20Resource extends Resource
     public function load(): self
     {
         $this->makeMap();
+        return $this;
     }
 
     public function model(): string
