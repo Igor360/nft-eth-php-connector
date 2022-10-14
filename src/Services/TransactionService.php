@@ -20,7 +20,7 @@ class TransactionService extends ResourceService
     }
 
     /**
-     * @return EthereumService|TokenService|null
+     * @return EthereumService|TokenService|ContractService|null
      */
     public function getResourceService()
     {

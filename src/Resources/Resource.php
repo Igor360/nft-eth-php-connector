@@ -4,13 +4,18 @@ namespace Igor360\NftEthPhpConnector\Resources;
 
 use Igor360\NftEthPhpConnector\Exceptions\ClassNameException;
 use Igor360\NftEthPhpConnector\Interfaces\ModelInterface;
+use Igor360\NftEthPhpConnector\Services\ContractService;
 use Igor360\NftEthPhpConnector\Services\EthereumService;
+use Igor360\NftEthPhpConnector\Services\TokenService;
 
 abstract class Resource
 {
     protected ModelInterface $model;
 
-    protected EthereumService $service;
+    /**
+     * @var EthereumService|TokenService|ContractService
+     */
+    protected $service;
 
     protected ?string $addressOrHash;
 
