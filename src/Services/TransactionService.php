@@ -119,4 +119,11 @@ class TransactionService extends ResourceService
         $publicKey = $utils->privateKeyToPublicKey($privateKey);
         return $utils->publicKeyToAddress($publicKey);
     }
+
+    protected function sendTransaction(string $to, int $value, string $data, string $privateKey): string
+    {
+        $addressFrom = $this->addressFromPrivate($privateKey);
+        ['transaction' => $transaction] = $this->getResourceService()->prepareTransaction($addressFrom, $to, $value, $data);
+        return $this->getResourceService()->signAndBroadcastTransaction($transaction, $privateKey);
+    }
 }
