@@ -14,8 +14,9 @@ final class ABIService extends ABIEncryptService
     /** @var Method|null */
     private ?Method $constructor = null;
     /** @var Method|null *
-    private ?Method $fallback = null;
-    /** @var Method|null */
+     * private ?Method $fallback = null;
+     * /** @var Method|null
+     */
     private ?Method $receive = null;
 
     /**
@@ -53,7 +54,16 @@ final class ABIService extends ABIEncryptService
                                 $this->constructor = $method;
                                 break;
                             case "function":
-                                $this->functions[$method->name] = $method;
+                                if (array_key_exists($method->name, $this->functions)) {
+                                    if (is_array($this->functions[$method->name])) {
+                                        $this->functions[$method->name] = array_merge([...$this->functions[$method->name]], [$method]);
+                                    } else {
+                                        $this->functions[$method->name] = array_merge([$this->functions[$method->name]], [$method]);
+                                    }
+                                } else {
+                                    $this->functions[$method->name] = $method;
+                                }
+                                $this->functionsById[$this->generateMethodSelectorByMethod($method)['hash']] = $method;
                                 break;
                             case "fallback":
                                 $this->fallback = $method;

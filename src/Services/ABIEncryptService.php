@@ -16,7 +16,9 @@ abstract class ABIEncryptService
 {
 
     /** @var array */
-    protected array $functions;
+    protected array $functions; // key is name of function
+
+    protected array $functionsById; // key is hex id of function
 
     protected bool $strictMode;
 
@@ -183,7 +185,20 @@ abstract class ABIEncryptService
         if (!$method instanceof Method) {
             throw new ContractABIException(sprintf('Call method "%s" is undefined in ABI', $name));
         }
+        return $this->decodeFunctionArgsByMethod($method, $encoded);
+    }
 
+    public function decodeFunctionArgsWithFunctionId(string $functionId, string $encoded): array
+    {
+        $method = $this->functionsById[$functionId] ?? null;
+        if (!$method instanceof Method) {
+            throw new ContractABIException(sprintf('Call function id "%s" is undefined in ABI', $functionId));
+        }
+        return $this->decodeFunctionArgsByMethod($method, $encoded);
+    }
+
+    public function decodeFunctionArgsByMethod(Method $method, string $encoded): array
+    {
         $encoded = substr($encoded, 10); // delete function id from str
 
         // Output params
@@ -334,15 +349,39 @@ abstract class ABIEncryptService
         return compact('function', 'hash');
     }
 
+    public function generateMethodSelectorByMethod(Method $method): array
+    {
+        $methodParams = $method->inputs;
+        $methodParamsCount = is_array($methodParams) ? count($methodParams) : 0;
+        $methodParamsTypes = [];
+        for ($i = 0; $i < $methodParamsCount; $i++) {
+            $param = $methodParams[$i];
+            $methodParamsTypes[] = $param->type;
+        }
+        $function = sprintf('%s(%s)', $method->name, implode(",", $methodParamsTypes));
+        $encodedMethodCall = Keccak::hash($function, 256);
+        $hash = '0x' . substr($encodedMethodCall, 0, 8);
+        return compact('function', 'hash');
+    }
+
     public function generateMethodSelectors(): array
     {
         $functionsSelectors = [];
         foreach (array_keys($this->functions) as $functionName) {
-            ['hash' => $hash] = $this->generateMethodSelector($functionName);
-            $functionsSelectors[$hash] = $functionName;
+            $method = $this->functions[$functionName] ?? null;
+            if ($method && is_array($method)) {
+                foreach ($method as $m) {
+                    ['hash' => $hash] = $this->generateMethodSelectorByMethod($m);
+                    $functionsSelectors[$hash] = $functionName;
+                }
+            } else {
+                ['hash' => $hash] = $this->generateMethodSelectorByMethod($method);
+                $functionsSelectors[$hash] = $functionName;
+            }
         }
         return $functionsSelectors;
     }
+
 
     public function decodeEventParams(string $name, array $encodedEventLog)
     {
