@@ -4,10 +4,8 @@ namespace Igor360\NftEthPhpConnector\Models;
 
 use Igor360\NftEthPhpConnector\Interfaces\ModelInterface;
 
-class Token extends Model
+class Token extends Contract
 {
-    public ?string $address;
-
     public string $name;
 
     public string $symbol;
