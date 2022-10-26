@@ -14,9 +14,15 @@ abstract class Contract extends ContractService
                 $functionName = str_replace('encode', '', $name);
                 $functionName = lcfirst($functionName);
                 return $this->encodeCall($functionName, $arguments);
+            case str_contains($name, 'encode_'):
+                $functionName = str_replace('encode_', '', $name);
+                return $this->encodeCall($functionName, $arguments);
             case str_contains($name, 'call'):
                 $functionName = str_replace('call', '', $name);
                 $functionName = lcfirst($functionName);
+                return $this->call($functionName, $arguments);
+            case str_contains($name, 'call_'):
+                $functionName = str_replace('call_', '', $name);
                 return $this->call($functionName, $arguments);
             default:
                 return $name(...$arguments);
