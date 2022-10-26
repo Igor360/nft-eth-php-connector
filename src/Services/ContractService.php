@@ -93,5 +93,10 @@ abstract class ContractService extends EthereumService
     {
         return $this->ABIService->decodeFunctionArgs($function, $encoded);
     }
+
+    public function decodeContractTransactionArgsByFunctionId(string $functionId, string $encoded): array
+    {
+        return $this->ABIService->decodeFunctionArgsWithFunctionId($functionId, $encoded);
+    }
 }
 

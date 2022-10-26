@@ -87,6 +87,6 @@ class TransactionContractService extends TransactionService
         }
         $functionName = $methods[$methodId] ?? null;
         $this->getTransactionModel()->callInfo->function = $functionName;
-        $this->getTransactionModel()->callInfo->decodedArgs = $this->getResourceService()->decodeFunctionArgsWithFunctionId($methodId, $this->getTransactionModel()->data);
+        $this->getTransactionModel()->callInfo->decodedArgs = $this->getResourceService()->decodeContractTransactionArgsByFunctionId($methodId, $this->getTransactionModel()->data);
     }
 }
