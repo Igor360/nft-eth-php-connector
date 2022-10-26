@@ -2,11 +2,9 @@
 
 namespace Igor360\NftEthPhpConnector\Resources;
 
-use Igor360\NftEthPhpConnector\Contracts\ContractsFactory;
 use Igor360\NftEthPhpConnector\Exceptions\InvalidAddressException;
-use Igor360\NftEthPhpConnector\Interfaces\ConnectionInterface;
-use Igor360\NftEthPhpConnector\Models\Contract;
-use Igor360\NftEthPhpConnector\Models\Token;
+use Igor360\NftEthPhpConnector\Models\Contract as ContractModel;
+use Igor360\NftEthPhpConnector\Contracts\Contract;
 use Igor360\NftEthPhpConnector\Services\EthereumService;
 
 class ContractResource extends Resource
@@ -25,7 +23,7 @@ class ContractResource extends Resource
 
     public function model(): string
     {
-        return Contract::class;
+        return ContractModel::class;
     }
 
     public function validateAddressOrHash(): void
