@@ -103,7 +103,7 @@ final class Event
     /**
      * @return array
      */
-    public function getDataInputs(): array
+    public function getDataInputs(): ?array
     {
         return $this->dataInputs;
     }
