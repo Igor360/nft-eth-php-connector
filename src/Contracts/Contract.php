@@ -33,7 +33,7 @@ abstract class Contract extends ContractService
     {
         $contractAddress = array_shift($args);
         $res = $this->callContractFunction($contractAddress, $functionName, $args);
-        return Arr::first($res);
+        return $res;
     }
 
     private function encodeCall(string $functionName, $args)
