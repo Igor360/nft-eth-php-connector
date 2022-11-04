@@ -58,8 +58,9 @@ abstract class ABIEncryptService
             $methodParamsTypes[] = $param->type;
             if ($param->type === "string") {
                 $encodedStr = $this->encodeString($arg);
-                $encoded.= $encodedStr['offset'];
+                $encoded.= $encodedStr['offsetHex'];
                 $encodedEnd.= $encodedStr['encoded'];
+                continue;
             }
             $encoded .= $this->encodeArg($param->type, $arg);
         }
@@ -69,6 +70,7 @@ abstract class ABIEncryptService
         return '0x' . substr($encodedMethodCall, 0, 8) . $encoded . $encodedEnd;
     }
 
+    // TODO refactor it
     // TODO refactor it
     public function encodeString($value): array
     {
@@ -86,8 +88,8 @@ abstract class ABIEncryptService
         $offsetHex = substr(str_pad(Integers::Pack_UInt_BE($offset), 64, "0", STR_PAD_LEFT), 0, 64);
         $countElements = $strSize / 2;
         $countElementsHex = substr(str_pad(Integers::Pack_UInt_BE($countElements), 64, "0", STR_PAD_LEFT), 0, 64);
-        $encoded =  $offsetHex . $countElementsHex . $hex;
-        return compact('encoded', 'offset');
+        $encoded = $countElementsHex . $hex;
+        return compact('encoded', 'offsetHex');
     }
 
     /**
