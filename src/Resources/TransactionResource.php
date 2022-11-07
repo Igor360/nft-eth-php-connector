@@ -22,6 +22,7 @@ class TransactionResource extends Resource
     {
         $this->loadTransaction();
         $this->loadLogs();
+        $this->loadCoin();
         return $this;
     }
 
@@ -76,5 +77,27 @@ class TransactionResource extends Resource
         if (!preg_match(EthereumService::ETHEREUM_HASH, $this->getAddressOrHash())) {
             throw new InvalidAddressException();
         }
+    }
+
+    public function loadCoin(): void
+    {
+        $id = $this->service->getChainId();
+        switch ($id) {
+            case 4286:
+                $coin = 'GATO';
+                break;
+            case 137:
+                $coin = 'MATIC';
+                break;
+            case 97:
+            case 56:
+                $coin = 'BNB';
+                break;
+            default:
+                $coin = 'ETH';
+                break;
+        }
+
+        $this->model->coin = $coin;
     }
 }

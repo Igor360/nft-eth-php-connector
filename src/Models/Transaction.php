@@ -48,6 +48,8 @@ class Transaction extends Model
 
     public ?array $logs;
 
+    public ?string $coin;
+
     public ?ContractCallInfo $callInfo;
 }
 
