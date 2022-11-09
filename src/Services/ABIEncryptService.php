@@ -52,16 +52,16 @@ abstract class ABIEncryptService
         $encoded = "";
         $encodedEnd = "";
         $methodParamsTypes = [];
-        $methodParamsCount = count($methodParams);
+        $methodParamsChunks = count($methodParams);
         for ($i = 0; $i < $methodParamsCount; $i++) {
             $param = $methodParams[$i];
             $arg = $givenArgs[$i];
             $methodParamsTypes[] = $param->type;
             if ($param->type === "string") {
-                $encodedStr = $this->encodeString($arg, $methodParamsCount);
+                $encodedStr = $this->encodeString($arg, $methodParamsChunks);
                 $encoded .= $encodedStr['offsetHex'];
                 $encodedEnd .= $encodedStr['encoded'];
-                $methodParams += 2;
+                $methodParamsChunks += 2;
                 continue;
             }
             $encoded .= $this->encodeArg($param->type, $arg);
