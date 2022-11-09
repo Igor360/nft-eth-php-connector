@@ -52,14 +52,16 @@ abstract class ABIEncryptService
         $encoded = "";
         $encodedEnd = "";
         $methodParamsTypes = [];
+        $methodParamsCount = count($methodParams);
         for ($i = 0; $i < $methodParamsCount; $i++) {
             $param = $methodParams[$i];
             $arg = $givenArgs[$i];
             $methodParamsTypes[] = $param->type;
             if ($param->type === "string") {
-                $encodedStr = $this->encodeString($arg);
-                $encoded.= $encodedStr['offsetHex'];
-                $encodedEnd.= $encodedStr['encoded'];
+                $encodedStr = $this->encodeString($arg, $methodParamsCount);
+                $encoded .= $encodedStr['offsetHex'];
+                $encodedEnd .= $encodedStr['encoded'];
+                $methodParams += 2;
                 continue;
             }
             $encoded .= $this->encodeArg($param->type, $arg);
@@ -72,19 +74,19 @@ abstract class ABIEncryptService
 
     // TODO refactor it
     // TODO refactor it
-    public function encodeString($value): array
+    public function encodeString($value, $paramsCount = 1): array
     {
         $value = ASCII::base16Encode($value);
         if (substr($value, 0, 2) === "0x") {
             $value = substr($value, 2);
         }
-        $offset = 128;
         $strSize = strlen($value);
         $chunks = str_split($value, 64);
         $hex = null;
         foreach ($chunks as $chunk) {
             $hex .= str_pad($chunk, 64, "0");
         }
+        $offset = 32 * $paramsCount;
         $offsetHex = substr(str_pad(Integers::Pack_UInt_BE($offset), 64, "0", STR_PAD_LEFT), 0, 64);
         $countElements = $strSize / 2;
         $countElementsHex = substr(str_pad(Integers::Pack_UInt_BE($countElements), 64, "0", STR_PAD_LEFT), 0, 64);
