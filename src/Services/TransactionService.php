@@ -105,9 +105,7 @@ class TransactionService extends ResourceService
             $functionName = str_replace('contract', '', $name);
             $functionName = lcfirst($functionName);
             $contractInstance = $this->getResource()->getService();
-            if (method_exists($contractInstance, $functionName)) {
-                return $contractInstance->$functionName(...$arguments);
-            }
+            return $contractInstance->$functionName(...$arguments);
         }
 
         return $name(...$arguments);
