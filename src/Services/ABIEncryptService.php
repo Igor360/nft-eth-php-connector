@@ -411,6 +411,7 @@ abstract class ABIEncryptService
                 $functionsSelectors[$hash] = $functionName;
             }
         }
+        $functionsSelectors['0x60806040'] = "constructor"; // contract creation selector
         return $functionsSelectors;
     }
 

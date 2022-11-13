@@ -52,16 +52,17 @@ final class ABIService extends ABIEncryptService
                         switch ($method->type) {
                             case "constructor":
                                 $this->constructor = $method;
-                                break;
+//                                break;
                             case "function":
-                                if (array_key_exists($method->name, $this->functions)) {
-                                    if (is_array($this->functions[$method->name])) {
-                                        $this->functions[$method->name] = array_merge([...$this->functions[$method->name]], [$method]);
+                                $name = $method->name ?? $method->type;
+                                if (array_key_exists($name, $this->functions)) {
+                                    if (is_array($this->functions[$name])) {
+                                        $this->functions[$name] = array_merge([...$this->functions[$name]], [$method]);
                                     } else {
-                                        $this->functions[$method->name] = array_merge([$this->functions[$method->name]], [$method]);
+                                        $this->functions[$name] = array_merge([$this->functions[$name]], [$method]);
                                     }
                                 } else {
-                                    $this->functions[$method->name] = $method;
+                                    $this->functions[$name] = $method;
                                 }
                                 $this->functionsById[$this->generateMethodSelectorByMethod($method)['hash']] = $method;
                                 break;
