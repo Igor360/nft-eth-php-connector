@@ -187,7 +187,7 @@ abstract class ABIEncryptService
         $methodResponseParamsCount = count($methodResponseParams);
 
         // What to expect
-        if ($methodResponseParamsCount <= 0) {
+        if ($methodResponseParamsCount <= 0 || $encoded === "") {
             return [];
         } elseif ($methodResponseParamsCount === 1) {
             // Put all in a single chunk
