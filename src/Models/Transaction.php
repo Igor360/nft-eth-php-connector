@@ -10,9 +10,9 @@ class Transaction extends Model
 
     public ?bool $status;
 
-    public string $from;
+    public ?string $from;
 
-    public string $to;
+    public ?string $to;
 
     public string $value;
 

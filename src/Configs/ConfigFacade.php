@@ -2,10 +2,10 @@
 
 namespace Igor360\NftEthPhpConnector\Configs;
 
-use Igor360\UniswapV2Connector\Exceptions\InvalidConstantException;
-use Igor360\UniswapV2Connector\Exceptions\InvalidImplementationClassException;
-use Igor360\UniswapV2Connector\Exceptions\InvalidMethodCallException;
-use Igor360\UniswapV2Connector\Interfaces\ConfigInterface;
+use Igor360\NftEthPhpConnector\Exceptions\InvalidConstantException;
+use Igor360\NftEthPhpConnector\Exceptions\InvalidImplementationClassException;
+use Igor360\NftEthPhpConnector\Exceptions\InvalidMethodCallException;
+use Igor360\NftEthPhpConnector\Interfaces\ConfigInterface;
 use ReflectionClass;
 
 abstract class ConfigFacade
