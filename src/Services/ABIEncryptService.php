@@ -222,7 +222,7 @@ abstract class ABIEncryptService
 
     public function decodeFunctionArgsWithFunctionId(string $functionId, string $encoded): array
     {
-        $method = $this->functionsById[$functionId] ?? null;
+        $method = $functionId !== '0x60806040' ? $this->functionsById[$functionId] ?? null : $this->functions['constructor'] ?? null;
         if (!$method instanceof Method) {
             throw new ContractABIException(sprintf('Call function id "%s" is undefined in ABI', $functionId));
         }
