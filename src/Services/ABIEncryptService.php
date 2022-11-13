@@ -26,7 +26,7 @@ abstract class ABIEncryptService
     protected array $events;
 
     /** @var string */
-    protected string $bytecode;
+    protected string $bytecode = "";
 
     public function encodeCall(string $name, ?array $args): string
     {
