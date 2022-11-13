@@ -20,6 +20,16 @@ abstract class ContractService extends EthereumService
         return $this->contractABI;
     }
 
+    public function bytecode(): string
+    {
+        return $this->ABIService->getBytecode();
+    }
+
+    public function setBytecode(string $bytecode): void
+    {
+        $this->ABIService->setBytecode($bytecode);
+    }
+
     protected function abiFromConfig(string $data): array
     {
         return json_decode($data, true, 512, JSON_THROW_ON_ERROR);

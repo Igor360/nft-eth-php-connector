@@ -101,4 +101,22 @@ final class ABIService extends ABIEncryptService
         }
         return $topics;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getBytecode()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param mixed $bytecode
+     */
+    public function setBytecode($bytecode): void
+    {
+        $this->bytecode = $bytecode;
+    }
+
+
 }

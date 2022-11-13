@@ -25,6 +25,9 @@ abstract class ABIEncryptService
     /** @var array */
     protected array $events;
 
+    /** @var string */
+    protected string $bytecode;
+
     public function encodeCall(string $name, ?array $args): string
     {
         $method = $this->functions[$name] ?? null;
@@ -225,6 +228,9 @@ abstract class ABIEncryptService
         $method = $functionId !== '0x60806040' ? $this->functionsById[$functionId] ?? null : $this->functions['constructor'] ?? null;
         if (!$method instanceof Method) {
             throw new ContractABIException(sprintf('Call function id "%s" is undefined in ABI', $functionId));
+        }
+        if ($method->type === 'constructor') {
+            $encoded = '0x60806040' . str_replace($this->bytecode, '', $encoded);
         }
         return $this->decodeFunctionArgsByMethod($method, $encoded);
     }
