@@ -12,6 +12,8 @@ class BaseCredentials implements ConnectionInterface
 
     protected bool $ssl;
 
+    protected ?string $params;
+
     /**
      * @param string $host
      * @param int|null $port
@@ -22,6 +24,7 @@ class BaseCredentials implements ConnectionInterface
         $this->host = $host;
         $this->port = $port;
         $this->ssl = $ssl;
+        $this->params = "";
     }
 
     public function host(): string
@@ -41,6 +44,19 @@ class BaseCredentials implements ConnectionInterface
     public function ssl(): bool
     {
         return (bool)$this->ssl;
+    }
+
+    public function params(): string
+    {
+        return $this->params;
+    }
+
+    /**
+     * @param string|null $params
+     */
+    public function setParams(?string $params): void
+    {
+        $this->params = $params;
     }
 
 }

@@ -13,4 +13,6 @@ interface ConnectionInterface
     public function port(): ?int;
 
     public function ssl(): bool;
+
+    public function params(): ?string;
 }

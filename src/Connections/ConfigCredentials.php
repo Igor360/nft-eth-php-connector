@@ -25,4 +25,9 @@ class ConfigCredentials implements ConnectionInterface
     {
         return (bool)Config::get('uniswap-v2-connector.eth.ssl');
     }
+
+    public function params(): string
+    {
+        return "";
+    }
 }
