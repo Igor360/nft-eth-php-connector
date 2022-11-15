@@ -78,6 +78,18 @@ class EthereumService extends EthereumRPC
         return Arr::get($res, 'result.transactions');
     }
 
+    public function getBlock(int $blockNumber, bool $onlyHashes = false): array
+    {
+        $res = $this->jsonRPC('eth_getBlockByNumber', null, ['0x' . dechex($blockNumber), !$onlyHashes]);
+        return Arr::get($res, 'result');
+    }
+
+    public function getBlockByHash(string $hash, bool $onlyHashes = false): array
+    {
+        $res = $this->jsonRPC('eth_getBlockByHash', null, [$hash, !$onlyHashes]);
+        return Arr::get($res, 'result');
+    }
+
     public function getBlockTransactionsCountByNumber(int $blockNumber): int
     {
         $res = $this->jsonRPC('eth_getBlockTransactionCountByNumber', null, ['0x' . dechex($blockNumber)]);
@@ -93,6 +105,36 @@ class EthereumService extends EthereumRPC
     public function getTransactionReceipt(string $txHash): ?array
     {
         $res = $this->jsonRPC("eth_getTransactionReceipt", null, [$txHash]);
+        return $res ? Arr::get($res, 'result') : [];
+    }
+
+    public function getTransactionTrace(string $txHash): ?array
+    {
+        $res = $this->jsonRPC("debug_traceTransaction", null, [$txHash]);
+        return $res ? Arr::get($res, 'result') : [];
+    }
+
+    public function getBlockTrace(int $number): ?array
+    {
+        $res = $this->jsonRPC("debug_traceBlockByNumber", null, ["0x" . dechex($number)]);
+        return $res ? Arr::get($res, 'result') : [];
+    }
+
+    public function getBlockSigners(int $number): ?array
+    {
+        $res = $this->jsonRPC("clique_getSigners", null, ["0x" . dechex($number)]);
+        return $res ? Arr::get($res, 'result') : [];
+    }
+
+    public function getBlockSignersByHash(string $hash): ?array
+    {
+        $res = $this->jsonRPC("clique_getSignersAtHash", null, [$hash]);
+        return $res ? Arr::get($res, 'result') : [];
+    }
+
+    public function getConsensusStatus(): ?array
+    {
+        $res = $this->jsonRPC("clique_status");
         return $res ? Arr::get($res, 'result') : [];
     }
 
