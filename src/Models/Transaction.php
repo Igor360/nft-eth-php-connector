@@ -50,6 +50,8 @@ class Transaction extends Model
 
     public ?string $coin;
 
+    public ?string $token;
+
     public ?ContractCallInfo $callInfo;
 }
 

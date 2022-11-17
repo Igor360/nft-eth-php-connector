@@ -3,6 +3,7 @@
 namespace Igor360\NftEthPhpConnector\Resources;
 
 use Igor360\NftEthPhpConnector\Contracts\ContractsFactory;
+use Igor360\NftEthPhpConnector\Contracts\ERC20Contract;
 use Igor360\NftEthPhpConnector\Exceptions\InvalidAddressException;
 use Igor360\NftEthPhpConnector\Exceptions\TransactionException;
 use Igor360\NftEthPhpConnector\Interfaces\ConnectionInterface;
@@ -12,8 +13,11 @@ use Illuminate\Support\Arr;
 
 class TransactionResource extends Resource
 {
+    private ConnectionInterface $credentials;
+
     public function __construct(?string $hash, ConnectionInterface $credentials)
     {
+        $this->credentials = $credentials;
         $this->service = new EthereumService($credentials);
         $this->setAddressOrHash($hash);
     }
@@ -65,6 +69,7 @@ class TransactionResource extends Resource
         $this->model->transactionIndex = (string)hexdec(Arr::get($transaction, "transactionIndex") ?? "");
         $this->model->type = Arr::get($transaction, "type");
         $this->model->contractAddress = Arr::get($transaction, "contractAddress");
+        $this->model->token = Arr::get($transaction, "token");
     }
 
     public function model(): string
@@ -96,6 +101,11 @@ class TransactionResource extends Resource
             default:
                 $coin = 'ETH';
                 break;
+        }
+
+        if ($this->model->token && $this->model->token != "0x0000000000000000000000000000000000000000") {
+            $erc20Service = new ERC20Contract($this->credentials);
+            $coin = $erc20Service->symbol($this->model->token);
         }
 
         $this->model->coin = $coin;
