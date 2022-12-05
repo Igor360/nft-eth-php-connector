@@ -123,6 +123,17 @@ abstract class ABIEncryptService
 
             return $offsetHex . $countElementsHex . $hex;
         }
+
+
+        // handle bytes32, it's temporary fix need more tests
+
+        if ($type === "bytes32") {
+            if (substr($value, 0, 2) === "0x") {
+                $value = substr($value, 2);
+            }
+            return str_pad((string)$value, 64, "0", STR_PAD_RIGHT);
+        }
+
         $type = preg_replace('/[^a-z]/', '', $type);
         switch ($type) {
             case "hash":
